@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.1
+    container_name: keycloak
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    command: start-dev
+    networks:
+      - keycloak-net
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: keycloak-postgres
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - keycloak-net
+
+  terraform:
+    image: hashicorp/terraform:1.5
+    container_name: terraform
+    volumes:
+      - ./terraform:/workspace
+    working_dir: /workspace
+    environment:
+      - TF_VAR_keycloak_url=http://keycloak:8080
+      - TF_VAR_keycloak_admin_username=admin
+      - TF_VAR_keycloak_admin_password=admin
+    depends_on:
+      - keycloak
+    networks:
+      - keycloak-net
+    entrypoint: ["sh", "-c", "sleep 30 && terraform init && terraform apply -auto-approve"]
+
+volumes:
+  pgdata:
+
+networks:
+  keycloak-net:
+    name: keycloak-net
