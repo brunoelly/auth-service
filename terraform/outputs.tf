@@ -1,10 +1,10 @@
 output "client_secret" {
-  value     = keycloak_openid_client.auth_service_client.client_secret
+  value     = module.client.client_secret
   sensitive = true
 }
 
 output "realm_name" {
-  value = keycloak_realm.ecommerce.realm
+  value = module.realm.realm_name
 }
 
 output "admin_user_username" {

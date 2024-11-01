@@ -1,0 +1,1 @@
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"client","Source":"./modules/client","Dir":"modules/client"},{"Key":"realm","Source":"./modules/realm","Dir":"modules/realm"},{"Key":"roles","Source":"./modules/roles","Dir":"modules/roles"}]}
