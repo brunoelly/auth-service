@@ -7,7 +7,6 @@ terraform {
   }
 }
 
-# Keycloak provider configuration
 provider "keycloak" {
   client_id = var.keycloak_admin_username
   username  = var.keycloak_admin_username

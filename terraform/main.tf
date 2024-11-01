@@ -1,27 +1,15 @@
 module "realm" {
   source = "./modules/realm"
-
-  providers = {
-    keycloak = keycloak
-  }
 }
 
 module "client" {
   source   = "./modules/client"
   realm_id = module.realm.realm_id
-
-  providers = {
-    keycloak = keycloak
-  }
 }
 
 module "roles" {
   source   = "./modules/roles"
   realm_id = module.realm.realm_id
-
-  providers = {
-    keycloak = keycloak
-  }
 }
 
 # Groups
@@ -59,7 +47,7 @@ resource "keycloak_user" "admin_user" {
   
   initial_password {
     value     = "admin123"
-    temporary = false
+    temporary = true
   }
 }
 
